@@ -1,0 +1,109 @@
+---
+import { profile } from "../data/profile";
+---
+
+<section id="home" class="hero page-shell" aria-labelledby="hero-title">
+  <div class="hero-grid">
+    <div class="hero-main">
+      <p class="eyebrow">Portfolio / 2026</p>
+      <h1 id="hero-title">{profile.name}</h1>
+      <p class="hero-role">{profile.role}</p>
+      <p class="hero-introduction">{profile.introduction}</p>
+
+      <div class="typing-line" aria-live="off">
+        <span class="typing-prefix" aria-hidden="true">›</span>
+        <span data-typing-text data-phrases={JSON.stringify(profile.typingPhrases)}>{profile.typingPhrases[0]}</span>
+        <span class="typing-cursor" aria-hidden="true"></span>
+      </div>
+
+      <div class="hero-actions">
+        <a class="button button-primary" href="#projects">View projects</a>
+        <a class="text-link" href={profile.githubUrl} target="_blank" rel="noreferrer">
+          GitHub <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-side" data-scroll-avatar>
+      <figure class="avatar-frame">
+        <img
+          src="/avatar.png"
+          width="720"
+          height="720"
+          alt="Pixel-art portrait of Yiyang Xiong"
+          loading="eager"
+          decoding="async"
+        />
+      </figure>
+
+      <aside class="hero-status" aria-label="Current status">
+        <span class="status-label">Local time</span>
+        <span class="status-value">
+          <span class="status-dot" aria-hidden="true"></span>
+          {profile.location} · <time data-local-time data-timezone={profile.timezone}>--:--</time>
+        </span>
+        <span class="status-note">UTC+8 / configured manually</span>
+      </aside>
+    </div>
+  </div>
+
+  <a class="scroll-cue" href="#about">
+    <span>About me</span>
+    <span aria-hidden="true">↓</span>
+  </a>
+</section>
+
+<script>
+  const typingTarget = document.querySelector("[data-typing-text]");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const phrases: string[] = typingTarget?.getAttribute("data-phrases")
+    ? JSON.parse(typingTarget.getAttribute("data-phrases") as string)
+    : [];
+
+  if (typingTarget && !reducedMotion && phrases.length > 0) {
+    let phraseIndex = 0;
+    let characterIndex = phrases[0].length;
+    let deleting = true;
+
+    const tick = () => {
+      const phrase = phrases[phraseIndex];
+      characterIndex += deleting ? -1 : 1;
+      typingTarget.textContent = phrase.slice(0, characterIndex);
+
+      let delay = deleting ? 42 : 72;
+
+      if (!deleting && characterIndex === phrase.length) {
+        deleting = true;
+        delay = 1500;
+      } else if (deleting && characterIndex === 0) {
+        deleting = false;
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+        delay = 300;
+      }
+
+      window.setTimeout(tick, delay);
+    };
+
+    window.setTimeout(tick, 1000);
+  }
+
+  const timeElement = document.querySelector("[data-local-time]");
+
+  if (timeElement) {
+    const timezone = timeElement.getAttribute("data-timezone") || "Asia/Shanghai";
+    const formatter = new Intl.DateTimeFormat("en-GB", {
+      timeZone: timezone,
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+
+    const updateTime = () => {
+      timeElement.textContent = formatter.format(new Date());
+      timeElement.setAttribute("datetime", new Date().toISOString());
+    };
+
+    updateTime();
+    window.setInterval(updateTime, 60_000);
+  }
+</script>

@@ -1,0 +1,17 @@
+---
+import ProjectCard from "./ProjectCard.astro";
+import { projects } from "../data/projects";
+---
+
+<section id="projects" class="section page-shell" aria-labelledby="projects-title" data-reveal>
+  <div class="section-heading" data-reveal-item>
+    <span class="section-number">02</span>
+    <div>
+      <h2 id="projects-title">Projects</h2>
+      <p class="section-note">A small selection of recent work.</p>
+    </div>
+  </div>
+  <div class="project-grid section-content">
+    {projects.map((project, index) => <ProjectCard project={project} index={index} />)}
+  </div>
+</section>

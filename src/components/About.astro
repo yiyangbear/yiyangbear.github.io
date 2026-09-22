@@ -1,0 +1,13 @@
+---
+import { profile } from "../data/profile";
+---
+
+<section id="about" class="section page-shell" aria-labelledby="about-title" data-reveal>
+  <div class="section-heading" data-reveal-item>
+    <span class="section-number">01</span>
+    <h2 id="about-title">About</h2>
+  </div>
+  <div class="section-content about-copy" data-reveal-item style="--item-index: 1">
+    {profile.about.map((paragraph) => <p>{paragraph}</p>)}
+  </div>
+</section>

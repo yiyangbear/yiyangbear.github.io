@@ -1,0 +1,26 @@
+---
+import ThemeToggle from "./ThemeToggle.astro";
+import { profile } from "../data/profile";
+
+const links = [
+  { label: "Home", href: "#home" },
+  { label: "About", href: "#about" },
+  { label: "Projects", href: "#projects" },
+  { label: "Skills", href: "#skills" },
+];
+---
+
+<header class="site-header">
+  <nav class="site-nav page-shell" aria-label="Primary navigation">
+    <a class="wordmark" href="#home" aria-label={`${profile.name}, home`}>
+      YX<span aria-hidden="true">.</span>
+    </a>
+
+    <div class="nav-links">
+      {links.map((link) => <a href={link.href} data-nav-link>{link.label}</a>)}
+    </div>
+
+    <ThemeToggle />
+  </nav>
+  <div class="scroll-progress" aria-hidden="true"><span data-scroll-progress></span></div>
+</header>

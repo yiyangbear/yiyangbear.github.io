@@ -1,0 +1,127 @@
+---
+import "../styles/global.css";
+import { profile } from "../data/profile";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = `${profile.name} — ${profile.role}`,
+  description = "Personal website of Yiyang Xiong, a second-year Computer Science undergraduate.",
+} = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, profile.websiteUrl);
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f7f7f5" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#111210" media="(prefers-color-scheme: dark)" />
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:site_name" content={profile.name} />
+
+    <title>{title}</title>
+
+    <script is:inline>
+      (() => {
+        const saved = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme = saved ?? (prefersDark ? "dark" : "light");
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <slot />
+
+    <script>
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+      const initializeReveal = () => {
+        const elements = document.querySelectorAll<HTMLElement>("[data-reveal]");
+
+        if (reducedMotion.matches || !("IntersectionObserver" in window)) {
+          elements.forEach((element) => element.dataset.visible = "true");
+          return;
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                (entry.target as HTMLElement).dataset.visible = "true";
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.14 },
+        );
+
+        elements.forEach((element) => observer.observe(element));
+      };
+
+      initializeReveal();
+      document.addEventListener("astro:after-swap", initializeReveal);
+
+      const initializeScrollDetails = () => {
+        if (document.documentElement.dataset.scrollDetailsReady === "true") return;
+        document.documentElement.dataset.scrollDetailsReady = "true";
+
+        const progress = document.querySelector<HTMLElement>("[data-scroll-progress]");
+        const avatar = document.querySelector<HTMLElement>("[data-scroll-avatar]");
+        const sections = [...document.querySelectorAll<HTMLElement>("main section[id]")];
+        const navLinks = [...document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]")];
+        let ticking = false;
+
+        const update = () => {
+          const scrollRange = document.documentElement.scrollHeight - window.innerHeight;
+          const scrollProgress = scrollRange > 0 ? Math.min(window.scrollY / scrollRange, 1) : 0;
+          progress?.style.setProperty("--scroll-progress", String(scrollProgress));
+
+          if (avatar && !reducedMotion.matches) {
+            avatar.style.setProperty("--avatar-shift", `${Math.min(window.scrollY * 0.035, 22)}px`);
+          }
+
+          let currentSection = sections[0]?.id;
+          sections.forEach((section) => {
+            if (section.getBoundingClientRect().top <= window.innerHeight * 0.38) {
+              currentSection = section.id;
+            }
+          });
+
+          navLinks.forEach((link) => {
+            const isCurrent = link.getAttribute("href") === `#${currentSection}`;
+            link.toggleAttribute("data-active", isCurrent);
+          });
+
+          ticking = false;
+        };
+
+        const requestUpdate = () => {
+          if (!ticking) {
+            window.requestAnimationFrame(update);
+            ticking = true;
+          }
+        };
+
+        window.addEventListener("scroll", requestUpdate, { passive: true });
+        window.addEventListener("resize", requestUpdate);
+        update();
+      };
+
+      initializeScrollDetails();
+    </script>
+  </body>
+</html>

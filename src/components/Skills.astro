@@ -1,0 +1,23 @@
+---
+import { skillGroups } from "../data/skills";
+---
+
+<section id="skills" class="section page-shell" aria-labelledby="skills-title" data-reveal>
+  <div class="section-heading" data-reveal-item>
+    <span class="section-number">03</span>
+    <div>
+      <h2 id="skills-title">Skills</h2>
+      <p class="section-note">Languages and tools reflected in my current projects.</p>
+    </div>
+  </div>
+  <div class="skills-grid section-content">
+    {skillGroups.map((group, index) => (
+      <div class="skill-group" data-reveal-item style={`--item-index: ${index + 1}`}>
+        <h3>{group.category}</h3>
+        <ul>
+          {group.skills.map((skill) => <li>{skill}</li>)}
+        </ul>
+      </div>
+    ))}
+  </div>
+</section>

@@ -1,0 +1,13 @@
+---
+import { profile } from "../data/profile";
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer page-shell">
+  <p>© {year} {profile.name}</p>
+  <div class="footer-links">
+    <a href={profile.githubUrl} target="_blank" rel="noreferrer">GitHub</a>
+    <span aria-hidden="true">·</span>
+    <span>Built with Astro</span>
+  </div>
+</footer>
