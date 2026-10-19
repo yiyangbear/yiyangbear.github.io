@@ -1,6 +1,6 @@
-# Yiyang Xiong — Personal Website
+# Yiyang Bear — Personal Website
 
-A minimalist single-page portfolio for **Yiyang Xiong**, a second-year Computer Science undergraduate. The production site is designed for [yiyangbear.github.io](https://yiyangbear.github.io), with source hosted in `yiyangbear/yiyangbear.github.io`.
+A minimalist single-page portfolio for **Yiyang Bear**. The production site is designed for [yiyangbear.github.io](https://yiyangbear.github.io), with source hosted in `yiyangbear/yiyangbear.github.io`.
 
 ## Stack
 
