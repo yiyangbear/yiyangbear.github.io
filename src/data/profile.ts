@@ -12,22 +12,22 @@ export interface Profile {
 }
 
 export const profile: Profile = {
-  name: "Yiyang Xiong",
-  role: "Computer Science Undergraduate",
+  name: "Yiyang Bear",
+  role: "Developer & Tech Enthusiast",
   introduction:
-    "Computer Science undergraduate interested in building thoughtful software and learning how systems work.",
+    "I enjoy building software, exploring algorithms, and turning ideas into useful projects.",
   about: [
-    "I am a second-year Computer Science undergraduate who enjoys learning how software works and turning that understanding into small, useful programs.",
-    "This site is a concise record of what I build and learn. More specific interests and experience can be added here as they develop.",
+    "I'm passionate about software development, artificial intelligence, and exploring how different technologies work.",
+    "This website is a collection of projects, experiments, and things I've learned along the way.",
   ],
   githubUrl: "https://github.com/yiyangbear",
   websiteUrl: "https://yiyangbear.github.io",
   email: "yiyang.xiong.dev@gmail.com",
-  location: "Shenzhen, China",
-  timezone: "Asia/Shanghai",
+  location: "Online",
+  timezone: "Etc/UTC",
   typingPhrases: [
-    "Computer Science Student",
     "Building things with code",
-    "Learning how software works",
+    "Exploring AI and software",
+    "Learning through projects",
   ],
 };
